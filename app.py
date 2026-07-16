@@ -99,7 +99,7 @@ st.link_button("🎮 Play Logic", "https://dailyintegral.com/play/logic", use_co
 st.write("---")
 st.latex(dl)
 st.write("---")
-
+st.link_button("AI Studio", "https://aistudio.google.com/", use_container_width=True)
 copy_button_html = f"""
     <button id="copyBtn" style="
         width: 100%;
