@@ -32,7 +32,6 @@ def fetch_robot_data():
 
     try:
         # 3. First API Call: Get list of tasks
-        st.info(f"Fetching tasks from timestamp: {from_date_unix}...")
         response = requests.get(BASE_URL, headers=headers, params=params)
         response.raise_for_status() # Check for HTTP errors
         
@@ -61,5 +60,8 @@ def fetch_robot_data():
         return None
 
 result = fetch_robot_data()
-st.text(result['result']["capturedTexts"]["clue"])
+clue=result['result']["capturedTexts"]["clue"]
+dl=clue.split("(big)")[2].replace("(dlnewline)","\n")
+st.markdown(dl)
+
 
