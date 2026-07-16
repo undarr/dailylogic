@@ -4,8 +4,7 @@ import time
 import json
 
 # --- Streamlit UI Configuration ---
-st.set_page_config(page_title="Browse.ai Task Runner", layout="centered")
-st.title("🤖 Browse.ai Task Fetcher")
+st.title("Daily Logic Replay")
 
 # --- Constants & Credentials ---
 ROBOT_ID = "ef597c3b-e228-4444-952d-6de2a65681c7"
@@ -56,27 +55,12 @@ def fetch_robot_data():
         detail_response = requests.get(detail_url, headers=headers)
         detail_response.raise_for_status()
 
-        # 7. Return/Display data
         return detail_response.json()
 
     except Exception as e:
         st.error(f"Error making the request: {e}")
         return None
 
-# --- Main App Logic ---
-if st.button("Run Fetch Logic"):
-    with st.spinner("Accessing Browse.ai API..."):
-        result = fetch_robot_data()
-        
-        if result:
-            st.subheader("Latest Task Result")
-            # Displaying the JSON output nicely
-            st.json(result)
-            
-            # Optional: If there is captured data, show it in a table
-            captured_data = result.get("result", {}).get("capturedLists", {})
-            if captured_data:
-                st.write("### Captured Lists")
-                st.write(captured_data)
-else:
-    st.write("Click the button above to start the process.")
+result = fetch_robot_data()
+st.json(result)
+
