@@ -95,26 +95,12 @@ def fetch_robot_data():
 result = fetch_robot_data()
 clue=result['result']["capturedTexts"]["clue"]
 dl=clue.split("()big()")[2].split("{\small")[0].replace("(dlnewline)","\n")
-st.text("\n")
+st.link_button("🎮 Play Logic", "https://dailyintegral.com/play/logic", use_container_width=True)
+st.write("---")
 st.latex(dl)
-
 st.write("---")
 
-# 3. Create Columns for Buttons
-col1, col2, col3 = st.columns([1, 1, 1])
-
-with col1:
-    # --- AI Solver Button ---
-    run_ai = st.button("🤖 Solve with AI", use_container_width=True)
-
-with col2:
-    # --- Play Logic Button (Opens in new tab) ---
-    st.link_button("🎮 Play Logic", "https://dailyintegral.com/play/logic", use_container_width=True)
-
-with col3:
-    # --- Copy Clue Button ---
-    # Using a small HTML/JS component to handle clipboard functionality
-    copy_button_html = f"""
+copy_button_html = f"""
     <button id="copyBtn" style="
         width: 100%;
         height: 38px;
@@ -141,9 +127,7 @@ with col3:
     }};
     </script>
     """
-    components.html(copy_button_html, height=45)
-
-
+components.html(copy_button_html, height=45)
 
 if st.button("Solve Problem with AI (without thinking)"):
     with st.spinner("Thinking... (Reasoning enabled)"):
