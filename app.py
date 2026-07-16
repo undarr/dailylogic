@@ -157,7 +157,7 @@ if st.button("Solve Problem with AI (without thinking)"):
             # Check for errors in response
             if 'choices' in response_json:
                 answer = response_json['choices'][0]['message']['content']
-                st.subheader("AI Solution:")
+                st.subheader("AI Solution (thinking disabled):")
                 st.markdown(answer)
             else:
                 st.error("Error from API: " + str(response_json))
@@ -180,7 +180,7 @@ if st.button("Solve Problem with AI (with thinking)"):
                     "messages": [
                         {
                             "role": "user",
-                            "content": "Solve this problem: " + dl
+                            "content": dl+"Solve the above mathematics problem and show all steps, at the end, add a statement 'Therefore, the answer is ...': "
                         }
                     ],
                     "reasoning": {"enabled": True}
@@ -193,7 +193,7 @@ if st.button("Solve Problem with AI (with thinking)"):
             # Check for errors in response
             if 'choices' in response_json:
                 answer = response_json['choices'][0]['message']['content']
-                st.subheader("AI Solution:")
+                st.subheader("AI Solution (thinking enabled):")
                 st.markdown(answer)
             else:
                 st.error("Error from API: " + str(response_json))
