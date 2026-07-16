@@ -144,7 +144,7 @@ if st.button("Solve Problem with AI (without thinking)"):
                     "messages": [
                         {
                             "role": "user",
-                            "content": "Solve this problem: " + dl
+                            "content": dl+"Solve the above mathematics problem and show all steps, at the end, add a statement 'Therefore, the answer is ...': "
                         }
                     ],
                     "reasoning": {"enabled": False}
