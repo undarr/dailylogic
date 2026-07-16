@@ -62,7 +62,7 @@ def fetch_robot_data():
 result = fetch_robot_data()
 clue=result['result']["capturedTexts"]["clue"]
 dl=clue.split("()big()")[2].split("{\small")[0].replace("(dlnewline)","\n")
-st.text()
+st.text("\n")
 st.latex(dl)
 
 
