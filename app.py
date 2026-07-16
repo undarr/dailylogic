@@ -4,12 +4,43 @@ import time
 import json
 
 # --- Streamlit UI Configuration ---
-st.link_button("🎮 Play Daily Logic", "https://dailyintegral.com/play/logic", use_container_width=True)
 
 # --- Constants & Credentials ---
 ROBOT_ID = "ef597c3b-e228-4444-952d-6de2a65681c7"
 API_KEY = "11a6fede-63f1-4708-9708-839af383cbb9:c6250626-cd55-4f9f-984d-fa0c959ca892"
 BASE_URL = f"https://api.browse.ai/v2/robots/{ROBOT_ID}/tasks"
+
+def latex_to_plain(text):
+    """Converts LaTeX-style math strings into plain text."""
+    # 1. Replace common mathematical symbols
+    replacements = {
+        r"\in": "in",
+        r"\mathbb{N}": "N",
+        r"\mathbb{Z}": "Z",
+        r"\mathbb{R}": "R",
+        r"\mid": "divides",
+        r"\small": "",
+        r"\\": " ",
+        r"\quad": " ",
+    }
+    
+    clean_text = text
+    for lat, pla in replacements.items():
+        clean_text = clean_text.replace(lat, pla)
+    
+    # 2. Remove LaTeX commands like \text{...} but keep the content inside the { }
+    clean_text = re.sub(r'\\text\{([^}]*)\}', r'\1', clean_text)
+    
+    # 3. Remove dollar signs $
+    clean_text = clean_text.replace("$", "")
+    
+    # 4. Remove any remaining curly braces
+    clean_text = clean_text.replace("{", "").replace("}", "")
+    
+    # 5. Clean up extra whitespace
+    clean_text = re.sub(' +', ' ', clean_text)
+    
+    return clean_text.strip()
 
 def fetch_robot_data():
     # 1. Logic for Start of Today (Replicating your JS math)
@@ -95,7 +126,7 @@ with col3:
 
     <script>
     document.getElementById('copyBtn').onclick = function() {{
-        const text = `{q_plain}`;
+        const text = `{latex_to_plain(dl)}`;
         navigator.clipboard.writeText(text).then(function() {{
             const btn = document.getElementById('copyBtn');
             btn.innerText = '✅ Copied!';
