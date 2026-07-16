@@ -61,7 +61,8 @@ def fetch_robot_data():
 
 result = fetch_robot_data()
 clue=result['result']["capturedTexts"]["clue"]
-dl="()big()".split(clue)[2].replace("(dlnewline)","\n")
+dl=clue.split("()big()")[2].replace("(dlnewline)","\n")
 st.markdown(dl)
+st.latex(dl)
 
 
