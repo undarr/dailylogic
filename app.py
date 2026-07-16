@@ -130,7 +130,7 @@ copy_button_html = f"""
 components.html(copy_button_html, height=45)
 
 if st.button("Solve Problem with AI (without thinking)"):
-    with st.spinner("Thinking... (Reasoning enabled)"):
+    with st.spinner("Thinking... (Reasoning disabled)"):
         try:
             # Your specific OpenRouter request logic
             response = requests.post(
