@@ -48,7 +48,6 @@ def fetch_robot_data():
 
         # 5. Get the ID of the last successful task
         last_task_id = successful_items[-1]["id"]
-        st.success(f"Found successful task ID: {last_task_id}")
 
         # 6. Second API Call: Get specific task details
         detail_url = f"{BASE_URL}/{last_task_id}"
@@ -62,5 +61,5 @@ def fetch_robot_data():
         return None
 
 result = fetch_robot_data()
-st.json(result)
+st.text(result['result']["capturedTexts"]["clue"])
 
