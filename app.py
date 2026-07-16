@@ -4,7 +4,7 @@ import time
 import json
 
 # --- Streamlit UI Configuration ---
-st.title("Daily Logic Replay")
+st.link_button("🎮 Play Daily Logic", "https://dailyintegral.com/play/logic", use_container_width=True)
 
 # --- Constants & Credentials ---
 ROBOT_ID = "ef597c3b-e228-4444-952d-6de2a65681c7"
@@ -65,7 +65,90 @@ dl=clue.split("()big()")[2].split("{\small")[0].replace("(dlnewline)","\n")
 st.text("\n")
 st.latex(dl)
 
-if st.button("Solve Problem with AI"):
+st.write("---")
+
+# 3. Create Columns for Buttons
+col1, col2, col3 = st.columns([1, 1, 1])
+
+with col1:
+    # --- AI Solver Button ---
+    run_ai = st.button("🤖 Solve with AI", use_container_width=True)
+
+with col2:
+    # --- Play Logic Button (Opens in new tab) ---
+    st.link_button("🎮 Play Logic", "https://dailyintegral.com/play/logic", use_container_width=True)
+
+with col3:
+    # --- Copy Clue Button ---
+    # Using a small HTML/JS component to handle clipboard functionality
+    copy_button_html = f"""
+    <button id="copyBtn" style="
+        width: 100%;
+        height: 38px;
+        background-color: #f0f2f6;
+        border: 1px solid rgba(49, 51, 63, 0.2);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        color: #31333F;
+        font-family: sans-serif;
+    ">📋 Copy Clue</button>
+
+    <script>
+    document.getElementById('copyBtn').onclick = function() {{
+        const text = `{q_plain}`;
+        navigator.clipboard.writeText(text).then(function() {{
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = '✅ Copied!';
+            btn.style.backgroundColor = '#d4edda';
+            setTimeout(() => {{
+                btn.innerText = '📋 Copy Clue';
+                btn.style.backgroundColor = '#f0f2f6';
+            }}, 2000);
+        }});
+    }};
+    </script>
+    """
+    components.html(copy_button_html, height=45)
+
+
+
+if st.button("Solve Problem with AI (without thinking)"):
+    with st.spinner("Thinking... (Reasoning enabled)"):
+        try:
+            # Your specific OpenRouter request logic
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": "Bearer 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",
+                    "Content-Type": "application/json",
+                },
+                data=json.dumps({
+                    "model": "google/gemma-4-26b-a4b-it:free",
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": "Solve this problem: " + dl
+                        }
+                    ],
+                    "reasoning": {"enabled": False}
+                })
+            )
+            
+            # Parsing the response
+            response_json = response.json()
+            
+            # Check for errors in response
+            if 'choices' in response_json:
+                answer = response_json['choices'][0]['message']['content']
+                st.subheader("AI Solution:")
+                st.markdown(answer)
+            else:
+                st.error("Error from API: " + str(response_json))
+                
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+
+if st.button("Solve Problem with AI (with thinking)"):
     with st.spinner("Thinking... (Reasoning enabled)"):
         try:
             # Your specific OpenRouter request logic
