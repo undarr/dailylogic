@@ -65,4 +65,39 @@ dl=clue.split("()big()")[2].split("{\small")[0].replace("(dlnewline)","\n")
 st.text("\n")
 st.latex(dl)
 
+if st.button("Solve Problem with AI"):
+    with st.spinner("Thinking... (Reasoning enabled)"):
+        try:
+            # Your specific OpenRouter request logic
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": "Bearer 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",
+                    "Content-Type": "application/json",
+                },
+                data=json.dumps({
+                    "model": "google/gemma-4-26b-a4b-it:free",
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": "Solve this problem: " + dl
+                        }
+                    ],
+                    "reasoning": {"enabled": True}
+                })
+            )
+            
+            # Parsing the response
+            response_json = response.json()
+            
+            # Check for errors in response
+            if 'choices' in response_json:
+                answer = response_json['choices'][0]['message']['content']
+                st.subheader("AI Solution:")
+                st.markdown(answer)
+            else:
+                st.error("Error from API: " + str(response_json))
+                
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
 
